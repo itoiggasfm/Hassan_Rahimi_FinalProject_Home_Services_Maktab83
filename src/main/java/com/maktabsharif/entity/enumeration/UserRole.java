@@ -1,0 +1,8 @@
+package com.maktabsharif.entity.enumeration;
+
+//import org.hibernate.validator.internal.constraintvalidators.bv.number.bound.decimal.AbstractDecimalMinValidator;
+
+public enum UserRole {
+    EXPERT,
+    CLIENT
+}
