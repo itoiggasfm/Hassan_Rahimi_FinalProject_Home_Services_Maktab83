@@ -2,14 +2,12 @@ package com.maktabsharif.entity;
 
 import com.maktabsharif.entity.enumeration.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
-public class User extends BaseEntity {
+public class User extends BaseEntity<String> {
 
     @Id
     @Column(name = "Id", unique = true, nullable = false)
@@ -27,20 +25,47 @@ public class User extends BaseEntity {
     @Column(name = "register_date")
     Long registerDate;
 
-    Wallet wallet;
     @Column(name = "user_role")
     UserRole userRole;
-
 
     @Column(name = "expert_status")
     ExpertStatus expertStatus;
     @Column(name = "expert_point")
     Integer expertPoint;
 
+    @ManyToMany(mappedBy = "user", cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY)
+    private List<Services> services;
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY, optional = false)
+    Wallet wallet;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY)
+    List<Order> order;
+
+    public Wallet getWallet() {
+        return wallet;
+    }
+
+    public void setWallet(Wallet wallet) {
+        this.wallet = wallet;
+    }
+
+    public List<Order> getOrder() {
+        return order;
+    }
+
+    public void setOrder(List<Order> order) {
+        this.order = order;
+    }
+
+
     @Override
     public String getId() {
-        return null;
+        return id;
     }
+
 
     @Override
     public void setId(String id) {
@@ -95,13 +120,7 @@ public class User extends BaseEntity {
         this.registerDate = registerDate;
     }
 
-    public Wallet getWallet() {
-        return wallet;
-    }
 
-    public void setWallet(Wallet wallet) {
-        this.wallet = wallet;
-    }
 
     public UserRole getUserRole() {
         return userRole;

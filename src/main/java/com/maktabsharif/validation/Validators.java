@@ -25,8 +25,8 @@ public class Validators {
 
 
     //validating number
-    public boolean validateNumber(String meNumber){
-        if(Pattern.compile("\\d{1}").matcher(meNumber).matches())
+    public boolean validateNumber(String number){
+        if(Pattern.compile("\\d{1}").matcher(number).matches())
             return true;
         else
             return false;
@@ -43,10 +43,26 @@ public class Validators {
 
     }
 
-    //validating password
-    public boolean validatePassword(String password){
-        if(Pattern.compile("^[A-Za-z0-9]{8,}").matcher(password).matches())
-            return true;
+    //validating password match
+    public String validatePasswordMatch(String newPassword, String newPasswordConfirmation){
+        if(newPassword.equals(newPasswordConfirmation))
+            return newPassword;
+        else{
+            System.out.println("Passwords do not match.\n");
+            return null;
+        }
+    }
+
+    //validating password Policy
+    public boolean validatePasswordPolicy(String password){
+        if(password != null){
+            if(Pattern.compile("^[A-Za-z0-9]{8,}").matcher(password).matches())
+                return true;
+            else
+                System.out.println("Password does not meet the password policy requirement.\n"
+                        + "Password must contain 8 characters at least including letter and number.");
+            return false;
+        }
         else
             return false;
     }

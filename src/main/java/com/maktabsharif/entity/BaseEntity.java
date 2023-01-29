@@ -1,8 +1,8 @@
 package com.maktabsharif.entity;
 
-public abstract class BaseEntity {
+public abstract class BaseEntity<T> {
 
-    public abstract String getId();
+    public abstract T getId();
 
-    public abstract void setId(String id);
+    public abstract void setId(T id);
 }

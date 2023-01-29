@@ -1,19 +1,30 @@
 package com.maktabsharif.entity;
 
-public class Transaction extends BaseEntity{
+import javax.persistence.*;
 
-    String id;
-    Long transactionDate;
-    Double transactionAmount;
-    @Override
-    public String getId() {
-        return null;
+@Entity
+@Table(name = "transaction")
+public class Transaction extends BaseEntity<Long>{
+
+    @Id
+    @Column(name = "Id", unique = true, nullable = false)
+    private Long id;
+    @Column(name = "transaction_date", nullable = false)
+    private Long transactionDate;
+    @Column(name = "transaction_amount")
+    private Double transactionAmount;
+
+    public Wallet getWallet() {
+        return wallet;
     }
 
-    @Override
-    public void setId(String id) {
-        this.id = id;
+    public void setWallet(Wallet wallet) {
+        this.wallet = wallet;
     }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Wallet wallet;
+
 
     public Long getTransactionDate() {
         return transactionDate;
@@ -29,5 +40,15 @@ public class Transaction extends BaseEntity{
 
     public void setTransactionAmount(Double transactionAmount) {
         this.transactionAmount = transactionAmount;
+    }
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(Long id) {
+        this.id = id;
     }
 }

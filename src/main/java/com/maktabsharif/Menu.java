@@ -30,15 +30,15 @@ public class Menu {
 
 
 
-//    private static final ProductService productService = new ProductService();
+
 //    private static final OrderService orderService = new OrderService();
     private static final Scanner input = new Scanner(System.in);
     private static User signedInUser = null;
     private static List<Order> cart = new ArrayList<>();
 
-    private static List<Order> allOrdersList = new ArrayList<>();
-    private static List<User> allPeopleList = new ArrayList<>();
-    private static List<Services> productsList = new ArrayList<>();
+    private static List<Order> OrdersList = new ArrayList<>();
+    private static List<User> usersList = new ArrayList<>();
+    private static List<Services> servicessList = new ArrayList<>();
 
 
     public static void home(){
@@ -48,29 +48,27 @@ public class Menu {
             System.out.println("1. Sign in");
             System.out.println("2. Sign up");
 //            System.out.println("3. Services");
-            System.out.println("=======================");
+            System.out.println("---------------------------");
 
             String choice = input.next();
             switch (choice){
                 case "1":{
                     signIn();
-//                    if(signedInUser != null){
-//                        if(signedInUser.getUserRole().equals("CLIENT"))
+                    if(signedInUser != null){
+//                        if(signedInUser.getUserRole().equals(UserRole.CLIENT))
 //                            clientAffairs(signedInUser);
-//                        if(signedInUser.getUserRole().equals("EXPERT") && signedInUser.getExpertStatus().equals("Approved"))
+//                        if(signedInUser.getUserRole().equals(UserRole.EXPERT))
 //                            expertAffairs(signedInUser);
-//                        if(signedInUser.getUserRole().equals("ADMIN"))
-//                            adminAffairs(signedInUser);
-//                    }
+                        if(signedInUser.getUsername().equals("admin"))
+                            adminAffairs(signedInUser);
+                    }
                 }//case 1
                 break;
 
                 case "2": {
                     signUp();
-//                    if (signedInUser != null) {
-//                        if (signedInUser.getUserRole().equals("EXPERT") && signedInUser.getExpertStatus().equals("Approved"))
-//                            expertAffairs(signedInUser);
-//                    }
+//                    if (signedInUser != null)
+//                        clientAffairs(signedInUser);
                 }
                 break;
 
@@ -140,64 +138,121 @@ public class Menu {
             user.setUserRole(UserRole.CLIENT);
 
 
-        if(userService.signUp(user))
+        if(userService.signUp(user) && user.getUserRole().equals(UserRole.CLIENT))
             signedInUser = user;
     }//end of signUp
 
 
     public static void changePassword(){
+        String newPassword = null;
         System.out.println("Enter old password: ");
         String oldPassword = input.next();
-        while(!signedInUser.getPassword().equals(oldPassword)){
-            System.out.println("Incorrect password");
-            System.out.println("Enter old password: ");
-            oldPassword = input.next();
-        }
-
-        System.out.println("New Password: ");
-        String newPassword = input.next();
-        System.out.println("Enter new password again: ");
-        String newPasswordConfirmation = input.next();
-        while (!newPassword.equals(newPasswordConfirmation)){
-            System.out.println("Passwords don't match\n");
+        if(signedInUser.getPassword().equals(oldPassword)){
             System.out.println("New Password: ");
             newPassword = input.next();
             System.out.println("Enter new password again: ");
-            newPasswordConfirmation = input.next();
+            String newPasswordConfirmation = input.next();
+            while(validators.validatePasswordPolicy(validators.validatePasswordMatch(newPassword, newPasswordConfirmation))){
+                System.out.println("Passwords don't match\n");
+                System.out.println("New Password: ");
+                newPassword = input.next();
+                System.out.println("Enter new password again: ");
+                newPasswordConfirmation = input.next();
+            }
         }
+        else
+            System.out.println("Incorrect password.\n");
+
         signedInUser.setPassword(newPassword);
         userService.update(signedInUser, signedInUser.getId());
 
     }//end of changePassword
 
 
-//    public static void adminAffairs(User signedInUser){
+    public static void adminAffairs(User signedInUser){
+
+        boolean valid = true;
+        while (valid == true){
+            System.out.printf("%n--------------------%nWelcome dear %s%n--------------------%n",signedInUser.getName());
+            System.out.println("1. Sign out");
+            System.out.println("2. Change password");
+            System.out.println("3. List of available services");
+            System.out.println("4. Add a service");
+            System.out.println("5. Approve registered experts");
+            System.out.println("6. Add or remove expert from services");
+            System.out.println("--------------------\n");
+
+            System.out.println("Choose an item:");
+            String choice = input.next();
+            switch (choice){
+                case "1":{
+                    valid =false;
+                }//end of case 1
+                break;
+
+                case "2":{
+                    String newPassword = changePassword();
+
+                    if(user.chnagePasword(signedInUser.getId(), newPassword))
+                        signedInUser.setPassword(newPassword);
+                }//case 2
+                break;
 //
-//        boolean valid = true;
-//        while (valid == true){
-//            System.out.printf("%n--------------------%nWelcome dear %s%n--------------------%n",signedInUser.getName());
-//            System.out.println("1. Sign out");
-//            System.out.println("2. Change password");
-//            System.out.println("3. List of available services");
-//            System.out.println("4. Add a service");
-//            System.out.println("5. Approve registered expeerts");
-//            System.out.println("6. Add or remove expert from services");
-//            System.out.printf("%n--------------------%n");
-//
-//            System.out.println("Choose an item:\n");
-//            String choice = input.next();
-//            switch (choice){
-//                case "1":{
-//                    valid =false;
-//                }//end of case 1
+//                case "3":{
+//                    addToCart();
+//                }
 //                break;
 //
-//                case "2":{
-//                    String newPassword = changePassword();
+//                case "4":{
+//                    cart();
+//                }
+//                break;
 //
-//                    if(customer.chnagePasword(signedInPerson.getId(), newPassword))
-//                        signedInPerson.setPassword(newPassword);
-//                }//case 2
+//                case "5":{
+//                    cart();
+//                }
+//                break;
+//
+//                case "6":{
+//                    cart();
+//                }
+//                break;
+//
+//                default:
+//                    System.out.println("Invalid choice");
+//                    break;
+            }
+        }
+    }//end of adminAffairs
+
+
+    public static void expertAffairs(User signedInUser){
+
+        boolean valid = true;
+        while (valid == true){
+            System.out.printf("%n--------------------%nWelcome dear %s%n--------------------%n",signedInUser.getName());
+            System.out.println("1. Sign out");
+            System.out.println("2. Change password");
+            System.out.println("3. List of available services");
+            System.out.println("4. Add a service");
+            System.out.println("5. Approve registered expeerts");
+            System.out.println("6. Add or remove expert from services");
+            System.out.printf("%n--------------------%n");
+
+            System.out.println("Choose an item:\n");
+            String choice = input.next();
+            switch (choice){
+                case "1":{
+                    valid =false;
+                }//end of case 1
+                break;
+
+                case "2":{
+                    String newPassword = changePassword();
+
+                    if(user.changePassword(signedInUser.getId(), newPassword))
+                        signedInUser.setPassword(newPassword);
+                }//case 2
 //                break;
 //
 //                case "3":{
@@ -223,95 +278,38 @@ public class Menu {
 //                default:
 //                    System.out.println("Invalid choice");
 //                    break;
-//            }
-//        }
-//    }//end of adminaffairs
-//
-//
-//    public static void expertAffairs(User signedInUser){
-//
-//        boolean valid = true;
-//        while (valid == true){
-//            System.out.printf("%n--------------------%nWelcome dear %s%n--------------------%n",signedInUser.getName());
-//            System.out.println("1. Sign out");
-//            System.out.println("2. Change password");
-//            System.out.println("3. List of available services");
-//            System.out.println("4. Add a service");
-//            System.out.println("5. Approve registered expeerts");
-//            System.out.println("6. Add or remove expert from services");
-//            System.out.printf("%n--------------------%n");
-//
-//            System.out.println("Choose an item:\n");
-//            String choice = input.next();
-//            switch (choice){
-//                case "1":{
-//                    valid =false;
-//                }//end of case 1
-//                break;
-//
-//                case "2":{
-//                    String newPassword = changePassword();
-//
-//                    if(customer.chnagePasword(signedInPerson.getId(), newPassword))
-//                        signedInPerson.setPassword(newPassword);
-//                }//case 2
-//                break;
-//
-//                case "3":{
-//                    addToCart();
-//                }
-//                break;
-//
-//                case "4":{
-//                    cart();
-//                }
-//                break;
-//
-//                case "5":{
-//                    cart();
-//                }
-//                break;
-//
-//                case "6":{
-//                    cart();
-//                }
-//                break;
-//
-//                default:
-//                    System.out.println("Invalid choice");
-//                    break;
-//            }
-//        }
-//    }//end of expertAffairs
-//
-//
-//    public static void clientAffairs(User signedInUser){
-//
-//        boolean valid = true;
-//        while (valid == true){
-//            System.out.printf("%n--------------------%nWelcome dear %s%n--------------------%n",signedInUser.getName());
-//            System.out.println("1. Sign out");
-//            System.out.println("2. Change password");
-//            System.out.println("3. List of available services");
-//            System.out.println("4. Add a service");
-//            System.out.println("5. Approve registered expeerts");
-//            System.out.println("6. Add or remove expert from services");
-//            System.out.printf("%n--------------------%n");
-//
-//            System.out.println("Choose an item:\n");
-//            String choice = input.next();
-//            switch (choice){
-//                case "1":{
-//                    valid =false;
-//                }//end of case 1
-//                break;
-//
-//                case "2":{
-//                    String newPassword = changePassword();
-//
-//                    if(customer.chnagePasword(signedInPerson.getId(), newPassword))
-//                        signedInPerson.setPassword(newPassword);
-//                }//case 2
+            }
+        }
+    }//end of expertAffairs
+
+
+    public static void clientAffairs(User signedInUser){
+
+        boolean valid = true;
+        while (valid == true){
+            System.out.printf("%n--------------------%nWelcome dear %s%n--------------------%n",signedInUser.getName());
+            System.out.println("1. Sign out");
+            System.out.println("2. Change password");
+            System.out.println("3. List of available services");
+            System.out.println("4. Add a service");
+            System.out.println("5. Approve registered expeerts");
+            System.out.println("6. Add or remove expert from services");
+            System.out.printf("%n--------------------%n");
+
+            System.out.println("Choose an item:\n");
+            String choice = input.next();
+            switch (choice){
+                case "1":{
+                    valid =false;
+                }//end of case 1
+                break;
+
+                case "2":{
+                    String newPassword = changePassword();
+
+                    if(user.chnagePasword(signedInUser.getId(), newPassword))
+                        signedInUser.setPassword(newPassword);
+                }//case 2
 //                break;
 //
 //                case "3":{
@@ -337,8 +335,8 @@ public class Menu {
 //                default:
 //                    System.out.println("Invalid choice");
 //                    break;
-//            }
-//        }
-//    }//end of clientAffairs
+            }
+        }
+    }//end of clientAffairs
 
 }

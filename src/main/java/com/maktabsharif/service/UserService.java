@@ -2,6 +2,8 @@ package com.maktabsharif.service;
 
 import com.maktabsharif.entity.BaseEntity;
 import com.maktabsharif.entity.User;
+import com.maktabsharif.entity.enumeration.ExpertStatus;
+import com.maktabsharif.entity.enumeration.UserRole;
 import com.maktabsharif.repository.UserRepository;
 
 public class UserService {
@@ -21,8 +23,8 @@ public class UserService {
             return  false;
     }
 
-    public boolean findByID(String nationalCode) {
-        if (userRepository.findById(nationalCode) != null){
+    public boolean findByID(String id) {
+        if (userRepository.findById(id) != null){
             System.out.println("National code already exists.");
             return true;
         }
@@ -44,7 +46,7 @@ public class UserService {
 
     public User singIn(String username, String password) {
         User user = userRepository.findByUsername(username);
-        if( user != null && user.getPassword().equalsIgnoreCase(password)){
+        if( user != null && user.getPassword().equals(password) && (user.getUserRole().equals(UserRole.CLIENT) || (user.getUserRole().equals(UserRole.EXPERT) && user.getExpertStatus().equals(ExpertStatus.APPROVED)) || user.getUsername().equals("admin"))){
             System.out.println("Login successful.\n");
             return user;
         }

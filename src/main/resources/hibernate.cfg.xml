@@ -18,6 +18,10 @@
 
 
         <mapping class="com.maktabsharif.entity.User" />
+        <mapping class="com.maktabsharif.entity.Wallet" />
+        <mapping class="com.maktabsharif.entity.Order" />
+        <mapping class="com.maktabsharif.entity.Services" />
+        <mapping class="com.maktabsharif.entity.Transaction" />
 
 
 

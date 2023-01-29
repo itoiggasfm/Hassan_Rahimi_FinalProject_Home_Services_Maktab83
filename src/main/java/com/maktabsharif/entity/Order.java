@@ -2,23 +2,35 @@ package com.maktabsharif.entity;
 
 import com.maktabsharif.entity.enumeration.OrderStatus;
 
-public class Order extends BaseEntity{
-    String id;
-    Double suggestedPrice;
-    Long orderDate;
-    String address;
-    OrderStatus orderStatus;
-    User user;
+import javax.persistence.*;
+import java.util.List;
 
-    @Override
-    public String getId() {
-        return null;
-    }
+@Entity
+@Table
+public class Order extends BaseEntity<Long>{
+    @Id
+    @Column(name = "Id", unique = true, nullable = false)
+    private Long id;
+    @Column(name = "suggested_price")
+    private Double suggestedPrice;
+    @Column(name = "order_date")
+    private Long orderDate;
+    @Column(name = "address")
+    private String address;
+    @Column(name = "order_status")
+    private OrderStatus orderStatus;
 
-    @Override
-    public void setId(String id) {
-        this.id = id;
-    }
+    @Column(name = "comment")
+    private String comment;
+    @ManyToOne( cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY)
+    private User user;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY)
+    private List<Suggestions> suggestions;
+
+
 
     public Double getSuggestedPrice() {
         return suggestedPrice;
@@ -58,5 +70,31 @@ public class Order extends BaseEntity{
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public List<Suggestions> getSuggestions() {
+        return suggestions;
+    }
+
+    public void setSuggestions(List<Suggestions> suggestions) {
+        this.suggestions = suggestions;
     }
 }

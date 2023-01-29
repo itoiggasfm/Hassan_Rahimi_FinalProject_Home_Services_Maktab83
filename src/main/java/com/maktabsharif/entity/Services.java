@@ -1,21 +1,28 @@
 package com.maktabsharif.entity;
 
-public class Services extends BaseEntity{
-    String serviceTitle;
-    Long parentId;
-    Double basePrice;
-    String description;
-    User user;
+import javax.persistence.*;
+import java.util.List;
 
-    @Override
-    public String getId() {
-        return null;
-    }
+@Entity
+@Table
+public class Services extends BaseEntity<Long>{
 
-    @Override
-    public void setId(String id) {
+    @Id
+    @Column(name = "Id", unique = true, nullable = false)
+    private Long id;
+    @Column(name = "service_title")
+    private String serviceTitle;
+    @Column(name = "parent_id")
+    private Long parentId;
+    @Column(name = "base_price")
+    private Double basePrice;
+    @Column(name = "description")
+    private String description;
+    @ManyToMany(mappedBy = "user", cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY)
+     List<User> user;
 
-    }
+
 
     public String getServiceTitle() {
         return serviceTitle;
@@ -49,13 +56,21 @@ public class Services extends BaseEntity{
         this.description = description;
     }
 
-    public User getUser() {
+    public List<User> getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(List<User> user) {
         this.user = user;
     }
 
+    @Override
+    public Long getId() {
+        return id;
+    }
 
+    @Override
+    public void setId(Long id) {
+        this.id = id;
+    }
 }
