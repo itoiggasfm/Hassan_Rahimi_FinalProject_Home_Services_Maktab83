@@ -7,7 +7,8 @@ import javax.persistence.*;
 public class Transaction extends BaseEntity<Long>{
 
     @Id
-    @Column(name = "Id", unique = true, nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", unique = true, nullable = false)
     private Long id;
     @Column(name = "transaction_date", nullable = false)
     private Long transactionDate;

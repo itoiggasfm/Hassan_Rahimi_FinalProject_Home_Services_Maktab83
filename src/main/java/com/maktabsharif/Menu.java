@@ -163,8 +163,11 @@ public class Menu {
         else
             System.out.println("Incorrect password.\n");
 
-        signedInUser.setPassword(newPassword);
-        userService.update(signedInUser, signedInUser.getId());
+       User passwordChangingUser = signedInUser;
+       passwordChangingUser.setPassword(newPassword);
+        userService.update(passwordChangingUser, signedInUser.getId());
+        if(userService.isPasswordChanged(signedInUser.getId(), newPassword))
+            signedInUser.setPassword(newPassword);
 
     }//end of changePassword
 
@@ -191,10 +194,7 @@ public class Menu {
                 break;
 
                 case "2":{
-                    String newPassword = changePassword();
-
-                    if(user.chnagePasword(signedInUser.getId(), newPassword))
-                        signedInUser.setPassword(newPassword);
+                 changePassword();
                 }//case 2
                 break;
 //
@@ -248,10 +248,7 @@ public class Menu {
                 break;
 
                 case "2":{
-                    String newPassword = changePassword();
-
-                    if(user.changePassword(signedInUser.getId(), newPassword))
-                        signedInUser.setPassword(newPassword);
+                    changePassword();
                 }//case 2
 //                break;
 //
@@ -305,10 +302,7 @@ public class Menu {
                 break;
 
                 case "2":{
-                    String newPassword = changePassword();
-
-                    if(user.chnagePasword(signedInUser.getId(), newPassword))
-                        signedInUser.setPassword(newPassword);
+                    changePassword();
                 }//case 2
 //                break;
 //

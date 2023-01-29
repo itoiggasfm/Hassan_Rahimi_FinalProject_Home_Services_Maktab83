@@ -6,10 +6,11 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table
+@Table(name = "orders")
 public class Order extends BaseEntity<Long>{
     @Id
-    @Column(name = "Id", unique = true, nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", unique = true, nullable = false)
     private Long id;
     @Column(name = "suggested_price")
     private Double suggestedPrice;
@@ -26,9 +27,11 @@ public class Order extends BaseEntity<Long>{
             fetch = FetchType.LAZY)
     private User user;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL)
     private List<Suggestions> suggestions;
+
+
 
 
 

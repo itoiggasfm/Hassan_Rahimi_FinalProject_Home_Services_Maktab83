@@ -10,7 +10,7 @@ import java.util.List;
 public class User extends BaseEntity<String> {
 
     @Id
-    @Column(name = "Id", unique = true, nullable = false)
+    @Column(name = "id", unique = true, nullable = false)
     String id;
     @Column(name = "name")
     String name;
@@ -33,9 +33,14 @@ public class User extends BaseEntity<String> {
     @Column(name = "expert_point")
     Integer expertPoint;
 
-    @ManyToMany(mappedBy = "user", cascade = CascadeType.ALL,
+    @ManyToMany(cascade = CascadeType.ALL,
             fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "user_services",
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "services_id")})
     private List<Services> services;
+
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL,
             fetch = FetchType.LAZY, optional = false)
     Wallet wallet;

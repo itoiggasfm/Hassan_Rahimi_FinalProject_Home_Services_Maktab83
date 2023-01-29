@@ -1,15 +1,11 @@
 package com.maktabsharif.repository;
 
 import com.maktabsharif.entity.BaseEntity;
+import com.maktabsharif.entity.Services;
 
-public class ServiceRepository<Service> extends BaseEntity {
-    @Override
-    public String getId() {
-        return null;
-    }
+public class ServiceRepository extends BaseRepository<Services> {
 
-    @Override
-    public void setId(String id) {
-
+    public ServiceRepository() {
+        super("Services", Services.class);
     }
 }

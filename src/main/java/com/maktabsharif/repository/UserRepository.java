@@ -7,10 +7,10 @@ import org.hibernate.Session;
 
 import java.util.List;
 
-public class UserRepository<U extends BaseEntity> extends BaseRepository<User> {
+public class UserRepository extends BaseRepository<User> {
 
-    public UserRepository(String entityName, Class<User> type) {
-        super(entityName, type);
+    public UserRepository() {
+        super("User", User.class);
     }
 
     public User findByUsername(String username) {

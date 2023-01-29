@@ -4,11 +4,12 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table
+@Table(name = "services")
 public class Services extends BaseEntity<Long>{
 
     @Id
-    @Column(name = "Id", unique = true, nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", unique = true, nullable = false)
     private Long id;
     @Column(name = "service_title")
     private String serviceTitle;
@@ -18,8 +19,7 @@ public class Services extends BaseEntity<Long>{
     private Double basePrice;
     @Column(name = "description")
     private String description;
-    @ManyToMany(mappedBy = "user", cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "services")
      List<User> user;
 
 

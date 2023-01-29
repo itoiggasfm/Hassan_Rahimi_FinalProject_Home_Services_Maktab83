@@ -1,15 +1,11 @@
 package com.maktabsharif.repository;
 
 import com.maktabsharif.entity.BaseEntity;
+import com.maktabsharif.entity.Wallet;
 
-public class WalletRepository<Wallet> extends BaseEntity {
-    @Override
-    public String getId() {
-        return null;
+public class WalletRepository extends BaseRepository<Wallet> {
+    public WalletRepository() {
+        super("Wallet", Wallet.class);
     }
 
-    @Override
-    public void setId(String id) {
-
-    }
 }

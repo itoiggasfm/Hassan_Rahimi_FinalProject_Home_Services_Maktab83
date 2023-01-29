@@ -1,6 +1,5 @@
 package com.maktabsharif.service;
 
-import com.maktabsharif.entity.BaseEntity;
 import com.maktabsharif.entity.User;
 import com.maktabsharif.entity.enumeration.ExpertStatus;
 import com.maktabsharif.entity.enumeration.UserRole;
@@ -8,10 +7,10 @@ import com.maktabsharif.repository.UserRepository;
 
 public class UserService {
 
-    private UserRepository<BaseEntity> userRepository;
+    private final UserRepository userRepository;
 
     public UserService(){
-        this.userRepository = new UserRepository<BaseEntity>("User", User.class);
+        this.userRepository = new UserRepository();
     }
 
 
@@ -57,6 +56,18 @@ public class UserService {
 
     public void update(User user, String id) {
         userRepository.update(user, id);
+    }
+
+    public boolean isPasswordChanged(String id, String password) {
+        User user = userRepository.findById(id);
+        if(user.getPassword().equals(password)){
+            System.out.println("Password successfully changed.\n");
+            return true;
+        }
+        else {
+            System.out.println("Password was not changed.\n");
+            return false;
+        }
     }
 
 }

@@ -1,15 +1,9 @@
 package com.maktabsharif.repository;
 
-import com.maktabsharif.entity.BaseEntity;
+import com.maktabsharif.entity.Order;
 
-public class OrderRepository<Order> extends BaseEntity {
-    @Override
-    public String getId() {
-        return null;
-    }
-
-    @Override
-    public void setId(String id) {
-
+public class OrderRepository extends BaseRepository<Order> {
+    public OrderRepository() {
+        super("Order", Order.class);
     }
 }
