@@ -22,6 +22,15 @@ public class Services extends BaseEntity<Long>{
     @ManyToMany(mappedBy = "services")
      List<User> user;
 
+    @ManyToMany(cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "services_order",
+            joinColumns = {@JoinColumn(name = "services_id")},
+            inverseJoinColumns = {@JoinColumn(name = "order_id")})
+     List<Order> order;
+
+
 
 
     public String getServiceTitle() {

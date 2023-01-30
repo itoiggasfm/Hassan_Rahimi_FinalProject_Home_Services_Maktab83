@@ -120,7 +120,9 @@ public class Menu {
 
         user.setRegisterDate(ZonedDateTime.now().toEpochSecond());
 
-        user.getWallet().setCredit(0d);
+        Wallet userWallet = new Wallet();
+        userWallet.setBalance(0d);
+        user.setWallet(userWallet);
 
         System.out.println("Are you registering as an expert? (Y/N)");
         String wantToBeExpert = input.next();
