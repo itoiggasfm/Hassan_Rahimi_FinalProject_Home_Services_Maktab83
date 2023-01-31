@@ -5,22 +5,22 @@ import java.util.List;
 
 @Entity
 @Table(name = "wallet")
-public class Wallet extends BaseEntity<Long>{
+public class Wallet extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
-    Long id;
+    private Long id;
 
-    @Column(name = "credit")
-    Double credit;
+    @Column(name = "balance")
+    private Double balance;
     @OneToMany(mappedBy = "wallet", cascade = CascadeType.ALL,
             fetch = FetchType.LAZY)
-    List<Transaction> transaction;
+    private List<Transaction> transaction;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    User user;
+
+    @OneToOne(mappedBy = "wallet")
+    private User user;
 
     @Override
     public Long getId() {
@@ -32,12 +32,12 @@ public class Wallet extends BaseEntity<Long>{
         this.id = id;
     }
 
-    public Double getCredit() {
-        return credit;
+    public Double getBalance() {
+        return balance;
     }
 
-    public void setCredit(Double credit) {
-        this.credit = credit;
+    public void setBalance(Double balance) {
+        this.balance = balance;
     }
 
     public List<Transaction> getTransaction() {

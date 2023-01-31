@@ -33,7 +33,7 @@ public abstract class BaseRepository<E extends BaseEntity> {
         return createdId instanceof Long;
     }
 
-    public void update(E e, String id) {
+    public void update(E e, Long id) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         E result = (E) session.load(type, id);
@@ -44,7 +44,7 @@ public abstract class BaseRepository<E extends BaseEntity> {
         session.close();
     }
 
-    public E findById(String id) {
+    public E findById(Long id) {
         Session session = sessionFactory.openSession();
         E result = (E) session.get(type, id);
         session.close();

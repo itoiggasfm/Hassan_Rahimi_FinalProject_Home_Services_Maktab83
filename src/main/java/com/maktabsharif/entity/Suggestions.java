@@ -5,7 +5,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "suggestions")
-public class Suggestions extends BaseEntity<Long>{
+public class Suggestions extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
@@ -14,7 +14,7 @@ public class Suggestions extends BaseEntity<Long>{
     private String suggestion;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "order_id", nullable = false)
+    @JoinColumn(name = "order_id", referencedColumnName = "id", nullable = false)
     private Order order;
 
     @Override

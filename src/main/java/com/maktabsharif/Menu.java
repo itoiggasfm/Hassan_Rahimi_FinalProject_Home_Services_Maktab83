@@ -98,13 +98,13 @@ public class Menu {
 
         System.out.println("National Code: ");
         String nationalCode = input.next();
-        while (!validators.validateNationalCOde(nationalCode) || userService.findByID(nationalCode)){
+        while (!validators.validateNationalCOde(nationalCode) || userService.findByUsername(nationalCode)){
             System.out.println("National Code: ");
             nationalCode = input.next();
-            if (validators.validateNationalCOde(nationalCode) && !userService.findByID(nationalCode))
+            if (validators.validateNationalCOde(nationalCode) && !userService.findByUsername(nationalCode))
                 break;
         }
-        user.setId(nationalCode);
+//        user.setId(nationalCode);
         user.setUsername(nationalCode);
         user.setPassword(nationalCode);
 
@@ -120,7 +120,9 @@ public class Menu {
 
         user.setRegisterDate(ZonedDateTime.now().toEpochSecond());
 
-        user.getWallet().setCredit(0d);
+        Wallet userWallet = new Wallet();
+        userWallet.setBalance(0d);
+        user.setWallet(userWallet);
 
         System.out.println("Are you registering as an expert? (Y/N)");
         String wantToBeExpert = input.next();
@@ -152,22 +154,22 @@ public class Menu {
             newPassword = input.next();
             System.out.println("Enter new password again: ");
             String newPasswordConfirmation = input.next();
-            while(validators.validatePasswordPolicy(validators.validatePasswordMatch(newPassword, newPasswordConfirmation))){
-                System.out.println("Passwords don't match\n");
+            while(!validators.validatePasswordPolicy(validators.validatePasswordMatch(newPassword, newPasswordConfirmation)) || validators.validateNewAndOldPasswordEquality((validators.validatePasswordMatch(newPassword, oldPassword)), oldPassword)){
                 System.out.println("New Password: ");
                 newPassword = input.next();
                 System.out.println("Enter new password again: ");
                 newPasswordConfirmation = input.next();
             }
+            User passwordChangingUser = signedInUser;
+            passwordChangingUser.setPassword(newPassword);
+            userService.update(passwordChangingUser, signedInUser.getId());
+            if(userService.isPasswordChanged(signedInUser.getId(), newPassword))
+                signedInUser.setPassword(newPassword);
         }
         else
             System.out.println("Incorrect password.\n");
 
-       User passwordChangingUser = signedInUser;
-       passwordChangingUser.setPassword(newPassword);
-        userService.update(passwordChangingUser, signedInUser.getId());
-        if(userService.isPasswordChanged(signedInUser.getId(), newPassword))
-            signedInUser.setPassword(newPassword);
+
 
     }//end of changePassword
 
@@ -176,14 +178,15 @@ public class Menu {
 
         boolean valid = true;
         while (valid == true){
-            System.out.printf("%n--------------------%nWelcome dear %s%n--------------------%n",signedInUser.getName());
-            System.out.println("1. Sign out");
-            System.out.println("2. Change password");
-            System.out.println("3. List of available services");
-            System.out.println("4. Add a service");
-            System.out.println("5. Approve registered experts");
-            System.out.println("6. Add or remove expert from services");
-            System.out.println("--------------------\n");
+            System.out.println("\n-------------------- Welcome dear " + signedInUser.getName() + "--------------------"
+                        + "\n1. Sign out"
+                        + "\n2. Change password"
+                        + "\n3. List of available services"
+                        + "\n4. Add a service"
+                        + "\n5. Edit a service"
+                        + "\n6. Approve registered experts"
+                        + "\n7. Add or remove expert from services"
+                        + "\n-------------------------------------\n");
 
             System.out.println("Choose an item:");
             String choice = input.next();
@@ -197,30 +200,35 @@ public class Menu {
                  changePassword();
                 }//case 2
                 break;
-//
-//                case "3":{
-//                    addToCart();
-//                }
-//                break;
-//
-//                case "4":{
-//                    cart();
-//                }
-//                break;
-//
-//                case "5":{
-//                    cart();
-//                }
-//                break;
-//
-//                case "6":{
-//                    cart();
-//                }
-//                break;
-//
-//                default:
-//                    System.out.println("Invalid choice");
-//                    break;
+
+                case "3":{
+
+                }
+                break;
+
+                case "4":{
+
+                }
+                break;
+
+                case "5":{
+
+                }
+                break;
+
+                case "6":{
+
+                }
+                break;
+
+                case "7":{
+
+                }
+                break;
+
+                default:
+                    System.out.println("Invalid choice");
+                    break;
             }
         }
     }//end of adminAffairs
@@ -230,14 +238,12 @@ public class Menu {
 
         boolean valid = true;
         while (valid == true){
-            System.out.printf("%n--------------------%nWelcome dear %s%n--------------------%n",signedInUser.getName());
-            System.out.println("1. Sign out");
-            System.out.println("2. Change password");
-            System.out.println("3. List of available services");
-            System.out.println("4. Add a service");
-            System.out.println("5. Approve registered expeerts");
-            System.out.println("6. Add or remove expert from services");
-            System.out.printf("%n--------------------%n");
+            System.out.println("\n-------------------- Welcome dear --------------------" + signedInUser.getName()
+                    + "\n1. Sign out"
+                    + "\n2. Change password"
+                    + "\n3. List of available services"
+                    + "\n4. Make an order"
+                    + "\n-------------------------------------\n");
 
             System.out.println("Choose an item:\n");
             String choice = input.next();
@@ -250,31 +256,21 @@ public class Menu {
                 case "2":{
                     changePassword();
                 }//case 2
-//                break;
-//
-//                case "3":{
-//                    addToCart();
-//                }
-//                break;
-//
-//                case "4":{
-//                    cart();
-//                }
-//                break;
-//
-//                case "5":{
-//                    cart();
-//                }
-//                break;
-//
-//                case "6":{
-//                    cart();
-//                }
-//                break;
-//
-//                default:
-//                    System.out.println("Invalid choice");
-//                    break;
+                break;
+
+                case "3":{
+
+                }
+                break;
+
+                case "4":{
+
+                }
+                break;
+
+                default:
+                    System.out.println("Invalid choice");
+                    break;
             }
         }
     }//end of expertAffairs
@@ -284,14 +280,12 @@ public class Menu {
 
         boolean valid = true;
         while (valid == true){
-            System.out.printf("%n--------------------%nWelcome dear %s%n--------------------%n",signedInUser.getName());
-            System.out.println("1. Sign out");
-            System.out.println("2. Change password");
-            System.out.println("3. List of available services");
-            System.out.println("4. Add a service");
-            System.out.println("5. Approve registered expeerts");
-            System.out.println("6. Add or remove expert from services");
-            System.out.printf("%n--------------------%n");
+            System.out.println("\n-------------------- Welcome dear --------------------" + signedInUser.getName()
+                    + "\n1. Sign out"
+                    + "\n2. Change password"
+                    + "\n3. List of available orders"
+                    + "\n4. Select an order"
+                    + "\n-------------------------------------\n");
 
             System.out.println("Choose an item:\n");
             String choice = input.next();
@@ -304,31 +298,21 @@ public class Menu {
                 case "2":{
                     changePassword();
                 }//case 2
-//                break;
-//
-//                case "3":{
-//                    addToCart();
-//                }
-//                break;
-//
-//                case "4":{
-//                    cart();
-//                }
-//                break;
-//
-//                case "5":{
-//                    cart();
-//                }
-//                break;
-//
-//                case "6":{
-//                    cart();
-//                }
-//                break;
-//
-//                default:
-//                    System.out.println("Invalid choice");
-//                    break;
+                break;
+
+                case "3":{
+
+                }
+                break;
+
+                case "4":{
+
+                }
+                break;
+
+                default:
+                    System.out.println("Invalid choice");
+                    break;
             }
         }
     }//end of clientAffairs

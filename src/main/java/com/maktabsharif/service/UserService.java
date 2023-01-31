@@ -22,8 +22,8 @@ public class UserService {
             return  false;
     }
 
-    public boolean findByID(String id) {
-        if (userRepository.findById(id) != null){
+    public boolean findByUsername(String username) {
+        if (userRepository.findByUsername(username) != null){
             System.out.println("National code already exists.");
             return true;
         }
@@ -54,11 +54,11 @@ public class UserService {
     }
 
 
-    public void update(User user, String id) {
+    public void update(User user, Long id) {
         userRepository.update(user, id);
     }
 
-    public boolean isPasswordChanged(String id, String password) {
+    public boolean isPasswordChanged(Long id, String password) {
         User user = userRepository.findById(id);
         if(user.getPassword().equals(password)){
             System.out.println("Password successfully changed.\n");

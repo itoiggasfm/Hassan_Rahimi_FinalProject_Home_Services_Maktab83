@@ -3,35 +3,37 @@ package com.maktabsharif.entity;
 import com.maktabsharif.entity.enumeration.*;
 
 import javax.persistence.*;
+import java.awt.*;
 import java.util.List;
 
 @Entity
 @Table(name = "users")
-public class User extends BaseEntity<String> {
+public class User extends BaseEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
-    String id;
+    private Long id;
     @Column(name = "name")
-    String name;
+    private String name;
     @Column(name = "family_name")
-    String familyName;
+    private String familyName;
     @Column(name = "username", unique = true, nullable = false)
-    String username;
+    private String username;
     @Column(name = "password", nullable = false)
-    String password;
+    private String password;
     @Column(name = "email", unique = true, nullable = false)
-    String email;
+    private String email;
     @Column(name = "register_date")
-    Long registerDate;
+    private Long registerDate;
 
     @Column(name = "user_role")
-    UserRole userRole;
+    private UserRole userRole;
 
     @Column(name = "expert_status")
-    ExpertStatus expertStatus;
+    private ExpertStatus expertStatus;
     @Column(name = "expert_point")
-    Integer expertPoint;
+    private Integer expertPoint;
 
     @ManyToMany(cascade = CascadeType.ALL,
             fetch = FetchType.LAZY)
@@ -41,13 +43,13 @@ public class User extends BaseEntity<String> {
             inverseJoinColumns = {@JoinColumn(name = "services_id")})
     private List<Services> services;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY, optional = false)
-    Wallet wallet;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "wallet_id", referencedColumnName = "id")
+    private Wallet wallet;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,
             fetch = FetchType.LAZY)
-    List<Order> order;
+    private List<Order> order;
 
     public Wallet getWallet() {
         return wallet;
@@ -67,13 +69,13 @@ public class User extends BaseEntity<String> {
 
 
     @Override
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
 
     @Override
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id=id;
     }
 

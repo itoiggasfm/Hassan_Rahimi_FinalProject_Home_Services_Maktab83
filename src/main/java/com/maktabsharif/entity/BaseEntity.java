@@ -1,8 +1,10 @@
 package com.maktabsharif.entity;
 
-public abstract class BaseEntity<T> {
+import java.io.Serializable;
 
-    public abstract T getId();
+public abstract class BaseEntity {
 
-    public abstract void setId(T id);
+    public abstract Long getId();
+
+    public abstract void setId(Long id);
 }

@@ -48,7 +48,7 @@ public class Validators {
         if(newPassword.equals(newPasswordConfirmation))
             return newPassword;
         else{
-            System.out.println("Passwords do not match.\n");
+            System.out.println("\nPasswords do not match.\n");
             return null;
         }
     }
@@ -65,6 +65,21 @@ public class Validators {
         }
         else
             return false;
+    }
+
+
+    public boolean validateNewAndOldPasswordEquality(String newPassword, String oldPassword){
+        if(newPassword != null){
+            if(newPassword.equals(oldPassword)){
+                System.out.println("\nNew password is the same as old password. Try again please.\n");
+                return true;
+            }
+            else
+                return false;
+        }
+        else
+            return false;
+
     }
 
 }

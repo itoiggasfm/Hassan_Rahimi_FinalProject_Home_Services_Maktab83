@@ -5,7 +5,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "services")
-public class Services extends BaseEntity<Long>{
+public class Services extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,6 +21,15 @@ public class Services extends BaseEntity<Long>{
     private String description;
     @ManyToMany(mappedBy = "services")
      List<User> user;
+
+    @ManyToMany(cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "services_order",
+            joinColumns = {@JoinColumn(name = "services_id")},
+            inverseJoinColumns = {@JoinColumn(name = "order_id")})
+     List<Order> order;
+
 
 
 
@@ -72,5 +81,13 @@ public class Services extends BaseEntity<Long>{
     @Override
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public List<Order> getOrder() {
+        return order;
+    }
+
+    public void setOrder(List<Order> order) {
+        this.order = order;
     }
 }

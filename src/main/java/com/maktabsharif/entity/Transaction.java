@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "transaction")
-public class Transaction extends BaseEntity<Long>{
+public class Transaction extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +24,7 @@ public class Transaction extends BaseEntity<Long>{
     }
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "wallet_id", referencedColumnName = "id", nullable = false)
     private Wallet wallet;
 
 
