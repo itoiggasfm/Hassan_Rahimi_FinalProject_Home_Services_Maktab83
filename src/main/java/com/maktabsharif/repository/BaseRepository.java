@@ -52,23 +52,22 @@ public abstract class BaseRepository<E extends BaseEntity> {
     }
 
 
-//    public List<E> findAll() {
-//        Session session = sessionFactory.openSession();
-//        Query query = session.createQuery("select e from " + entityName + " e");
-//        List list = query.list();
-//        session.close();
-//        return list;
-//    }
-//
-//    public void delete(Long id) {
-//        Session session = sessionFactory.openSession();
-//        session.beginTransaction();
-//
-//        E result = session.get(type, id);
-//        User user = session.get(User.class, 1);
-//
-//        session.delete(result);
-//        session.getTransaction().commit();
-//        session.close();
-//    }
+    public List<E> findAll() {
+        Session session = sessionFactory.openSession();
+        Query query = session.createQuery("select e from " + entityName + " e");
+        List list = query.list();
+        session.close();
+        return list;
+    }
+
+    public void delete(Long id) {
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+
+        E result = (E) session.get(type, id);
+       // E entity = (E) session.get(User.class, 1);
+        session.delete(result);
+        session.getTransaction().commit();
+        session.close();
+    }
 }

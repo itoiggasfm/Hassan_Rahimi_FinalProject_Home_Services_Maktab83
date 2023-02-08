@@ -71,7 +71,7 @@ public class Validators {
     public boolean validateNewAndOldPasswordEquality(String newPassword, String oldPassword){
         if(newPassword != null){
             if(newPassword.equals(oldPassword)){
-                System.out.println("\nNew password is the same as old password. Try again please.\n");
+                System.out.println("\nNew and old passwords are the same.\n");
                 return true;
             }
             else

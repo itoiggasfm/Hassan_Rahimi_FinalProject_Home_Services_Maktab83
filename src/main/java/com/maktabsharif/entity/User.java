@@ -1,6 +1,8 @@
 package com.maktabsharif.entity;
 
 import com.maktabsharif.entity.enumeration.*;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.awt.*;
@@ -35,21 +37,25 @@ public class User extends BaseEntity {
     @Column(name = "expert_point")
     private Integer expertPoint;
 
-    @ManyToMany(cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @ManyToMany/*(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)*/
     @JoinTable(
             name = "user_services",
-            joinColumns = {@JoinColumn(name = "user_id")},
-            inverseJoinColumns = {@JoinColumn(name = "services_id")})
+            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "services_id", referencedColumnName = "id")})
     private List<Services> services;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.MERGE/*, fetch = FetchType.EAGER*/)
     @JoinColumn(name = "wallet_id", referencedColumnName = "id")
     private Wallet wallet;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(mappedBy = "user")
     private List<Order> order;
+
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(mappedBy = "user")
+    private List<Suggestions> suggestions;
 
     public Wallet getWallet() {
         return wallet;
@@ -153,4 +159,11 @@ public class User extends BaseEntity {
         this.expertPoint = expertPoint;
     }
 
+    public List<Services> getServices() {
+        return services;
+    }
+
+    public void setServices(List<Services> services) {
+        this.services = services;
+    }
 }
