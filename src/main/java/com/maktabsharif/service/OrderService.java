@@ -103,7 +103,7 @@ public class OrderService {
         List<Order> ordersWhoseExpertIsSelected =  ordersWhoseExpertIsSelected();
 
         if(!ordersWhoseExpertIsSelected.isEmpty()){
-            System.out.printf("\nOrder ID     Ordered service    Description                        Order date               Start date by client       Ordered by     Address          Base price of service     Suggested price by client     Order status                           Suggested price by you      Suggested date by you    Start date by you         Do duration");
+            System.out.printf("\nOrder ID     Ordered service    Description                        Order date               Start date by client       Ordered by     Address          Base price of service     Suggested price by client     Order status                           Suggested price by you      Suggestion date by you    Start date by you         Do duration");
             System.out.printf("\n------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
             for (Order order: ordersWhoseExpertIsSelected) {
                 if(suggestionsService.findById(order.getSelectedSuggestionId()).getUser().getId() == expertId){
@@ -201,8 +201,8 @@ public class OrderService {
 
         if (!orders.isEmpty()) {
 
-            System.out.printf("\nOrder ID     Ordered service    Description                        Order date               Start date                 Ordered by     Address          Base price of service     Suggested price by you     Order status                            Selected expert");
-            System.out.printf("\n-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+            System.out.printf("\nOrder ID     Ordered service    Description                        Order date               Start date                 Ordered by     Address          Base price of service     Suggested price by you     Order status                            Selected by expert");
+            System.out.printf("\n----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
 
             for (Order order : orders)
                 if (clientId == order.getUser().getId())
@@ -218,9 +218,8 @@ public class OrderService {
                                 order.getServices().getBasePrice(),
                                 order.getClientSuggestedPrice(),
                                 order.getOrderStatus(),
-                                (order.getSelectedSuggestionId() != null)?suggestionsService.findById(order.getSelectedSuggestionId()).getUser().getName():"",
-                                (order.getSelectedSuggestionId() != null)?suggestionsService.findById(order.getSelectedSuggestionId()).getUser().getFamilyName():""
-
+                                (order.getSelectedSuggestionId() != null)?userService.findById(order.getSelectedSuggestionId()).getName():"",
+                                (order.getSelectedSuggestionId() != null)?userService.findById(order.getSelectedSuggestionId()).getFamilyName():""
                         );
         }// end of   if (!orders.isEmpty())
     }// end of  public void displayOrdersOfClient(Long clientId)
