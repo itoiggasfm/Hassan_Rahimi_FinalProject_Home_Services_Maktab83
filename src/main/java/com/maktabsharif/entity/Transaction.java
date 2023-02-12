@@ -23,7 +23,7 @@ public class Transaction extends BaseEntity{
         this.wallet = wallet;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne/*(fetch = FetchType.LAZY)*/
     @JoinColumn(name = "wallet_id", referencedColumnName = "id", nullable = false)
     private Wallet wallet;
 

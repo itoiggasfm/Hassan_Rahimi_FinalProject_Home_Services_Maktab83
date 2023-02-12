@@ -71,7 +71,7 @@ public class Validators {
     public boolean validateNewAndOldPasswordEquality(String newPassword, String oldPassword){
         if(newPassword != null){
             if(newPassword.equals(oldPassword)){
-                System.out.println("\nNew password is the same as old password. Try again please.\n");
+                System.out.println("\nNew and old passwords are the same.\n");
                 return true;
             }
             else
@@ -80,6 +80,15 @@ public class Validators {
         else
             return false;
 
+    }
+
+    public boolean validateImageExtension(String imagePth){
+        if(Pattern.compile("([^\\s]+(\\.(?i)(jpg))$)").matcher(imagePth).matches())
+            return true;
+        else{
+            System.out.println("Invalid Email address.");
+            return false;
+        }
     }
 
 }

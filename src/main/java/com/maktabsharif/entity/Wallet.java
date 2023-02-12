@@ -1,5 +1,8 @@
 package com.maktabsharif.entity;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -14,8 +17,10 @@ public class Wallet extends BaseEntity{
 
     @Column(name = "balance")
     private Double balance;
-    @OneToMany(mappedBy = "wallet", cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY)
+
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(mappedBy = "wallet", cascade = CascadeType.MERGE/*,
+            fetch = FetchType.EAGER*/)
     private List<Transaction> transaction;
 
 

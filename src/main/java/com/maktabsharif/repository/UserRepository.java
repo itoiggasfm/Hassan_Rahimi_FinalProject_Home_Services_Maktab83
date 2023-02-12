@@ -24,6 +24,19 @@ public class UserRepository extends BaseRepository<User> {
         return list.get(0);
     }
 
+
+    public boolean findPasswordById(Long id, String password){
+        Session session = sessionFactory.openSession();
+        Query query = session.createQuery("select u from User u where u.password=:password and id=:id")
+                .setParameter("password", password)
+                .setParameter("id", id);
+        List<User> list = query.list();
+        session.close();
+        if(list.isEmpty())
+            return false;
+        return true;
+    }
+
     public User findByEmail(String email) {
         Session session = sessionFactory.openSession();
         Query query = session.createQuery("select u from User u where u.email=:email")

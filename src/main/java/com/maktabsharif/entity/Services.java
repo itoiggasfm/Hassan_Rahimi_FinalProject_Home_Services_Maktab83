@@ -1,5 +1,8 @@
 package com.maktabsharif.entity;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -19,17 +22,14 @@ public class Services extends BaseEntity{
     private Double basePrice;
     @Column(name = "description")
     private String description;
+
+    @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToMany(mappedBy = "services")
      List<User> user;
 
-    @ManyToMany(cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "services_order",
-            joinColumns = {@JoinColumn(name = "services_id")},
-            inverseJoinColumns = {@JoinColumn(name = "order_id")})
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(mappedBy = "services", cascade = CascadeType.MERGE/*, fetch = FetchType.LAZY*/)
      List<Order> order;
-
 
 
 
@@ -90,4 +90,6 @@ public class Services extends BaseEntity{
     public void setOrder(List<Order> order) {
         this.order = order;
     }
+
+
 }

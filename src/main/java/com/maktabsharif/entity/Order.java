@@ -1,54 +1,89 @@
 package com.maktabsharif.entity;
 
 import com.maktabsharif.entity.enumeration.OrderStatus;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Entity
 @Table(name = "orders")
-public class Order extends BaseEntity<Long>{
+public class Order extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
     private Long id;
-    @Column(name = "suggested_price")
-    private Double suggestedPrice;
+    @Column(name = "work_description")
+    private String workDescription;
+    @Column(name = "client_suggested_price")
+    private Double clientSuggestedPrice;
     @Column(name = "order_date")
-    private Long orderDate;
+    private Timestamp orderDate;
+    @Column(name = "start_date_by_client")
+    private Timestamp startDateByClient;
     @Column(name = "address")
     private String address;
     @Column(name = "order_status")
     private OrderStatus orderStatus;
-
     @Column(name = "comment")
     private String comment;
-    @ManyToOne( cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY)
+    @Column(name = "selected_suggestion_id")
+    private Long selectedSuggestionId;
+
+
+    @ManyToOne(cascade = CascadeType.MERGE/*, fetch = FetchType.LAZY*/)
     private User user;
 
-    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(mappedBy = "order")
     private List<Suggestions> suggestions;
 
+    @ManyToOne/*( cascade = CascadeType.MERGE, fetch = FetchType.LAZY)*/
+    Services services;
 
 
-
-
-    public Double getSuggestedPrice() {
-        return suggestedPrice;
+    @Override
+    public Long getId() {
+        return id;
     }
 
-    public void setSuggestedPrice(Double suggestedPrice) {
-        this.suggestedPrice = suggestedPrice;
+    @Override
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public Long getOrderDate() {
+    public String getWorkDescription() {
+        return workDescription;
+    }
+
+    public void setWorkDescription(String workDescription) {
+        this.workDescription = workDescription;
+    }
+
+    public Double getClientSuggestedPrice() {
+        return clientSuggestedPrice;
+    }
+
+    public void setClientSuggestedPrice(Double clientSuggestedPrice) {
+        this.clientSuggestedPrice = clientSuggestedPrice;
+    }
+
+    public Timestamp getOrderDate() {
         return orderDate;
     }
 
-    public void setOrderDate(Long orderDate) {
+    public void setOrderDate(Timestamp orderDate) {
         this.orderDate = orderDate;
+    }
+
+    public Timestamp getStartDateByClient() {
+        return startDateByClient;
+    }
+
+    public void setStartDateByClient(Timestamp startDateByClient) {
+        this.startDateByClient = startDateByClient;
     }
 
     public String getAddress() {
@@ -67,24 +102,6 @@ public class Order extends BaseEntity<Long>{
         this.orderStatus = orderStatus;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    @Override
-    public Long getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public String getComment() {
         return comment;
     }
@@ -93,11 +110,35 @@ public class Order extends BaseEntity<Long>{
         this.comment = comment;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     public List<Suggestions> getSuggestions() {
         return suggestions;
     }
 
     public void setSuggestions(List<Suggestions> suggestions) {
         this.suggestions = suggestions;
+    }
+
+    public Services getServices() {
+        return services;
+    }
+
+    public void setServices(Services services) {
+        this.services = services;
+    }
+
+    public Long getSelectedSuggestionId() {
+        return selectedSuggestionId;
+    }
+
+    public void setSelectedSuggestionId(Long selectedSuggestionId) {
+        this.selectedSuggestionId = selectedSuggestionId;
     }
 }
