@@ -128,9 +128,12 @@ public class UserService {
         if( user != null && user.getPassword().equals(password) && (user.getUserRole().equals(UserRole.CLIENT) || (user.getUserRole().equals(UserRole.EXPERT) && user.getExpertStatus().equals(ExpertStatus.APPROVED)) || user.getUserRole().equals(UserRole.ADMIN))){
             System.out.println("Login successful.\n");
             return user;
-        }
+        }else{
         System.out.println("Username or password is incorrect\n");
         return null;
+}
+
+
     }
 
 
